@@ -1,1001 +1,324 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>🎾 テニス ダブルス <br>ニコニコ組み合わせ & スコア記録</title>
-    <style>
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-      body {
-        font-family: "Helvetica Neue", Arial, sans-serif;
-        background: #f1f8e9;
-        color: #333;
-      }
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎾 テニス ダブルス 組み合わせ</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f1f8e9; color: #333; }
 
-      header {
-        background: #2e7d32;
-        color: white;
-        padding: 20px;
-        text-align: center;
-      }
-      header h1 {
-        font-size: 24px;
-      }
-      header p {
-        margin-top: 6px;
-        font-size: 13px;
-        opacity: 0.8;
-      }
+header { background: #2e7d32; color: white; padding: 20px; text-align: center; }
+header h1 { font-size: 26px; }
+header p { margin-top: 6px; font-size: 13px; opacity: 0.8; }
 
-      .container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 16px;
-      }
+.container { max-width: 800px; margin: 0 auto; padding: 16px; }
 
-      .card {
-        background: white;
-        border-radius: 12px;
-        padding: 20px;
-        margin-bottom: 16px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      }
-      .card h2 {
-        color: #2e7d32;
-        font-size: 16px;
-        margin-bottom: 14px;
-        border-bottom: 2px solid #c8e6c9;
-        padding-bottom: 8px;
-      }
+.card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+.card h2 { color: #2e7d32; font-size: 16px; margin-bottom: 14px; border-bottom: 2px solid #c8e6c9; padding-bottom: 8px; }
 
-      /* 入力 */
-      .input-row {
-        display: flex;
-        gap: 8px;
-        margin-bottom: 12px;
-      }
-      input[type="text"] {
-        flex: 1;
-        padding: 10px 14px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        font-size: 16px;
-      }
-      input[type="text"]:focus {
-        outline: none;
-        border-color: #4caf50;
-      }
-      input[type="number"] {
-        width: 70px;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        font-size: 16px;
-        text-align: center;
-      }
+.input-row { display: flex; gap: 8px; margin-bottom: 12px; }
+input[type=text] { flex: 1; padding: 10px 14px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; }
+input[type=text]:focus { outline: none; border-color: #4caf50; }
+input[type=number] { width: 70px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; text-align: center; }
 
-      button {
-        padding: 10px 18px;
-        border: none;
-        border-radius: 8px;
-        font-size: 15px;
-        cursor: pointer;
-        transition: background 0.15s;
-      }
-      .btn-add {
-        background: #4caf50;
-        color: white;
-      }
-      .btn-add:hover {
-        background: #388e3c;
-      }
-      .btn-remove {
-        background: #ffcdd2;
-        color: #c62828;
-        padding: 4px 10px;
-        font-size: 13px;
-      }
-      .btn-generate {
-        background: #2e7d32;
-        color: white;
-        width: 100%;
-        padding: 16px;
-        font-size: 18px;
-        font-weight: bold;
-      }
-      .btn-generate:disabled {
-        background: #bdbdbd;
-        cursor: not-allowed;
-      }
-      .btn-reshuffle {
-        background: #66bb6a;
-        color: white;
-        width: 100%;
-        margin-top: 14px;
-      }
-      .btn-print {
-        background: #1565c0;
-        color: white;
-        width: 100%;
-        margin-top: 8px;
-      }
+button { padding: 10px 18px; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; transition: background 0.2s; }
+.btn-add { background: #4caf50; color: white; }
+.btn-add:hover { background: #388e3c; }
+.btn-remove { background: #ffcdd2; color: #c62828; padding: 4px 10px; font-size: 13px; }
+.btn-remove:hover { background: #ef9a9a; }
+.btn-generate { background: #2e7d32; color: white; width: 100%; padding: 16px; font-size: 18px; font-weight: bold; }
+.btn-generate:hover:not(:disabled) { background: #1b5e20; }
+.btn-generate:disabled { background: #bdbdbd; cursor: not-allowed; }
+.btn-reshuffle { background: #66bb6a; color: white; width: 100%; margin-top: 14px; }
+.btn-reshuffle:hover { background: #43a047; }
+.btn-print { background: #1565c0; color: white; width: 100%; margin-top: 8px; }
+.btn-print:hover { background: #0d47a1; }
 
-      /* プレーヤーリスト */
-      .player-list {
-        list-style: none;
-      }
-      .player-item {
-        display: flex;
-        align-items: center;
-        padding: 8px 4px;
-        border-bottom: 1px solid #f0f0f0;
-      }
-      .player-num {
-        color: #aaa;
-        font-size: 13px;
-        width: 28px;
-      }
-      .player-name {
-        flex: 1;
-        font-size: 15px;
-      }
-      .badge {
-        background: #e8f5e9;
-        color: #2e7d32;
-        padding: 4px 14px;
-        border-radius: 20px;
-        font-size: 14px;
-        font-weight: bold;
-        display: inline-block;
-        margin-top: 10px;
-      }
+.player-list { list-style: none; }
+.player-item { display: flex; align-items: center; padding: 8px 4px; border-bottom: 1px solid #f0f0f0; }
+.player-num { color: #aaa; font-size: 13px; width: 28px; }
+.player-name { flex: 1; font-size: 15px; }
+.badge { background: #e8f5e9; color: #2e7d32; padding: 4px 14px; border-radius: 20px; font-size: 14px; font-weight: bold; display: inline-block; margin-top: 10px; }
 
-      /* 設定 */
-      .settings-row {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        flex-wrap: wrap;
-        font-size: 15px;
-        color: #555;
-      }
+.settings-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; font-size: 15px; color: #555; }
 
-      /* 乱数表 */
-      .random-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-        gap: 8px;
-      }
-      .random-item {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        background: #f9fbe7;
-        border-radius: 8px;
-        padding: 8px 12px;
-      }
-      .circle-num {
-        background: #4caf50;
-        color: white;
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        font-size: 14px;
-        flex-shrink: 0;
-      }
+.random-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+.random-item { display: flex; align-items: center; gap: 10px; background: #f9fbe7; border-radius: 8px; padding: 8px 12px; }
+.circle-num { background: #4caf50; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; flex-shrink: 0; }
 
-      /* ラウンド・コート */
-      .round-block {
-        border: 1px solid #c8e6c9;
-        border-radius: 10px;
-        padding: 14px;
-        margin-bottom: 14px;
-      }
-      .round-title {
-        font-weight: bold;
-        color: #1b5e20;
-        font-size: 16px;
-        margin-bottom: 12px;
-      }
+.round-block { border: 1px solid #c8e6c9; border-radius: 10px; padding: 14px; margin-bottom: 12px; }
+.round-title { font-weight: bold; color: #1b5e20; font-size: 15px; margin-bottom: 10px; }
+.court-block { background: #e8f5e9; border-radius: 8px; padding: 12px; margin-bottom: 8px; }
+.court-label { font-size: 12px; color: #555; margin-bottom: 8px; }
+.match-row { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.team-box { background: white; border: 2px solid #a5d6a7; border-radius: 8px; padding: 8px 16px; text-align: center; min-width: 130px; }
+.team-box .player-a { font-weight: bold; font-size: 15px; color: #2e7d32; }
+.team-box .player-b { font-size: 13px; color: #555; margin-top: 2px; }
+.vs-label { font-weight: bold; color: #888; font-size: 16px; }
+.sitting-box { background: #fff8e1; border-radius: 8px; padding: 8px 12px; font-size: 13px; color: #e65100; margin-top: 6px; }
 
-      .court-block {
-        background: #f1f8e9;
-        border-radius: 10px;
-        padding: 12px;
-        margin-bottom: 10px;
-        border: 1px solid #a5d6a7;
-      }
-      .court-label {
-        font-size: 12px;
-        color: #666;
-        margin-bottom: 6px;
-      }
-      .court-teams {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        flex-wrap: wrap;
-        margin-bottom: 10px;
-      }
-      .team-badge {
-        background: white;
-        border: 2px solid #4caf50;
-        border-radius: 8px;
-        padding: 6px 14px;
-        text-align: center;
-        font-weight: bold;
-        color: #2e7d32;
-        font-size: 14px;
-      }
-      .vs-label {
-        color: #999;
-        font-weight: bold;
-      }
+/* ペア重複警告 */
+.pair-warn { background: #fff3e0; border: 1px solid #ffb74d; border-radius: 6px; padding: 4px 10px; font-size: 12px; color: #e65100; margin-top: 6px; display: inline-block; }
 
-      /* ゲーム行 */
-      .game-row {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        padding: 7px 0;
-        border-bottom: 1px solid #ddd;
-        flex-wrap: wrap;
-      }
-      .game-row:last-child {
-        border-bottom: none;
-      }
-      .game-num-badge {
-        background: #e0e0e0;
-        color: #555;
-        width: 28px;
-        height: 28px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 12px;
-        font-weight: bold;
-        flex-shrink: 0;
-      }
-      .server-name {
-        font-size: 13px;
-        color: #444;
-        flex: 1;
-        min-width: 110px;
-      }
-      .server-tag {
-        background: #fff9c4;
-        padding: 1px 6px;
-        border-radius: 4px;
-        font-size: 11px;
-        color: #f57f17;
-        margin-left: 4px;
-      }
+.stats-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.stats-table th { background: #4caf50; color: white; padding: 8px 12px; text-align: center; }
+.stats-table td { padding: 8px 12px; text-align: center; border-bottom: 1px solid #e0e0e0; }
+.stats-table tr:nth-child(even) td { background: #f1f8e9; }
 
-      .btn-keep,
-      .btn-break {
-        padding: 6px 12px;
-        font-size: 13px;
-        border-radius: 6px;
-        border: 2px solid transparent;
-      }
-      .btn-keep {
-        background: #e8f5e9;
-        color: #2e7d32;
-        border-color: #a5d6a7;
-      }
-      .btn-keep.selected {
-        background: #4caf50;
-        color: white;
-        border-color: #2e7d32;
-      }
-      .btn-break {
-        background: #fce4ec;
-        color: #c62828;
-        border-color: #ef9a9a;
-      }
-      .btn-break.selected {
-        background: #e53935;
-        color: white;
-        border-color: #c62828;
-      }
+.hidden { display: none; }
 
-      .server-select {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        flex-wrap: wrap;
-        margin: 2px 0;
-      }
-      .server-select-label {
-        font-size: 11px;
-        color: #999;
-        white-space: nowrap;
-      }
-      .btn-server {
-        padding: 4px 10px;
-        font-size: 13px;
-        border-radius: 6px;
-        border: 2px solid #b0bec5;
-        background: #eceff1;
-        color: #546e7a;
-      }
-      .btn-server.selected {
-        background: #1565c0;
-        color: white;
-        border-color: #0d47a1;
-      }
+@media print {
+header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.no-print { display: none !important; }
+.card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+  <p><a href="tennis-keep.html">KEEP・BREAK記録版はこちら</a></p>
+<header>
+<h1>🎾 テニス ダブルス 組み合わせ</h1>
+<p>ランダム公平組み合わせシステム（ペア重複回避）</p>
+</header>
 
-      .game-result-text {
-        font-size: 12px;
-        color: #555;
-        min-width: 70px;
-      }
+<div class="container">
 
-      /* コートスコア */
-      .court-score {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 12px;
-        margin-top: 10px;
-        padding: 10px;
-        background: white;
-        border-radius: 8px;
-      }
-      .score-team {
-        text-align: center;
-      }
-      .score-name {
-        font-size: 12px;
-        color: #888;
-        margin-bottom: 2px;
-      }
-      .score-num {
-        font-size: 28px;
-        font-weight: bold;
-        color: #2e7d32;
-      }
-      .score-sep {
-        font-size: 22px;
-        color: #ccc;
-      }
+<div class="card no-print">
+<h2>👥 参加者入力</h2>
+<div class="input-row">
+<input type="text" id="nameInput" placeholder="プレーヤー名を入力（例: 田中）" />
+<button class="btn-add" onclick="addPlayer()">追加</button>
+</div>
+<ul class="player-list" id="playerList"></ul>
+<div class="badge" id="countBadge">参加者: 0名</div>
+<p style="font-size:12px;color:#999;margin-top:8px">※ 4名以上で生成できます</p>
+</div>
 
-      .sitting-box {
-        background: #fff8e1;
-        border-radius: 8px;
-        padding: 8px 12px;
-        font-size: 13px;
-        color: #e65100;
-        margin-top: 8px;
-      }
+<div class="card no-print">
+<h2>⚙️ 設定</h2>
+<div class="settings-row">
+<label for="numRounds">ラウンド数（試合数）:</label>
+<input type="number" id="numRounds" min="1" max="20" value="5" />
+<span style="font-size:13px;color:#999">（1〜20）</span>
+</div>
+</div>
 
-      /* 集計 */
-      .stats-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 14px;
-      }
-      .stats-table th {
-        background: #4caf50;
-        color: white;
-        padding: 10px 12px;
-        text-align: center;
-      }
-      .stats-table td {
-        padding: 9px 12px;
-        text-align: center;
-        border-bottom: 1px solid #e0e0e0;
-      }
-      .stats-table tr:nth-child(even) td {
-        background: #f1f8e9;
-      }
-      .rank-1 td {
-        background: #fff9c4 !important;
-        font-weight: bold;
-      }
-      .games-won-cell {
-        font-size: 20px;
-        font-weight: bold;
-        color: #2e7d32;
-      }
+<button class="btn-generate no-print" id="generateBtn" onclick="generate()" disabled>
+🎲 組み合わせを生成
+</button>
 
-      .hidden {
-        display: none;
-      }
+<div id="results" class="hidden">
 
-      @media print {
-        .no-print {
-          display: none !important;
-        }
-        .card {
-          box-shadow: none;
-          border: 1px solid #ccc;
-          break-inside: avoid;
-        }
-        header {
-          -webkit-print-color-adjust: exact;
-          print-color-adjust: exact;
-        }
-        .btn-keep,
-        .btn-break {
-          display: none;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <h1>🎾 テニス ダブルス <br />ニコニコ組み合わせ & スコア記録</h1>
-      <p
-        id="headerDate"
-        style="margin-top: 6px; font-size: 15px; font-weight: bold"
-      ></p>
-      <p
-        id="headerVenue"
-        style="margin-top: 2px; font-size: 13px; opacity: 0.85"
-      ></p>
-      <p style="margin-top: 6px; font-size: 12px; opacity: 0.7">
-        ランダム公平組み合わせ ／ キープ・ブレーク記録 ／ 取得ゲーム数集計
-      </p>
-    </header>
+<div class="card">
+<h2>📋 乱数表</h2>
+<div class="random-grid" id="randomTable"></div>
+</div>
 
-    <div class="container">
-      <!-- 参加者入力 -->
-      <div class="card no-print">
-        <h2>👥 参加者入力</h2>
-        <div class="input-row">
-          <input
-            type="text"
-            id="nameInput"
-            placeholder="プレーヤー名を入力（例: 田中）"
-          />
-          <button class="btn-add" onclick="addPlayer()">追加</button>
-        </div>
-        <ul class="player-list" id="playerList"></ul>
-        <div class="badge" id="countBadge">参加者: 0名</div>
-        <p style="font-size: 12px; color: #999; margin-top: 8px">
-          ※ 4名以上で生成できます
-        </p>
-      </div>
+<div class="card">
+<h2>🎾 組み合わせ表</h2>
+<div id="combinations"></div>
+<button class="btn-reshuffle no-print" onclick="generate()">🔄 再抽選</button>
+<button class="btn-print no-print" onclick="window.print()">🖨️ 印刷</button>
+</div>
 
-      <!-- 開催情報 -->
-      <div class="card no-print">
-        <h2>📅 開催情報</h2>
-        <div class="settings-row" style="margin-bottom: 12px">
-          <label for="eventDate">日付:</label>
-          <input
-            type="date"
-            id="eventDate"
-            style="
-              padding: 8px 12px;
-              border: 1px solid #ccc;
-              border-radius: 8px;
-              font-size: 15px;
-            "
-          />
-        </div>
-        <div class="settings-row">
-          <label for="eventVenue">開催場所:</label>
-          <input
-            type="text"
-            id="eventVenue"
-            placeholder="例: ○○テニスクラブ"
-            style="max-width: 300px"
-          />
-        </div>
-      </div>
+<div class="card">
+<h2>📊 試合数 統計</h2>
+<table class="stats-table" id="statsTable"></table>
+</div>
 
-      <!-- 設定 -->
-      <div class="card no-print">
-        <h2>⚙️ 設定</h2>
-        <div class="settings-row">
-          <label for="numRounds">ラウンド数:</label>
-          <input type="number" id="numRounds" min="1" max="10" value="5" />
-          <span style="font-size: 13px; color: #999"
-            >（1〜10　各ラウンド = 4ゲーム消化）</span
-          >
-        </div>
-      </div>
+</div>
+</div>
 
-      <!-- 生成ボタン -->
-      <button
-        class="btn-generate no-print"
-        id="generateBtn"
-        onclick="generate()"
-        disabled
-      >
-        🎲 組み合わせを生成
-      </button>
+<script>
+let players = [];
 
-      <!-- 結果エリア -->
-      <div id="results" class="hidden">
-        <!-- 乱数表 -->
-        <div class="card">
-          <h2>📋 乱数表</h2>
-          <div class="random-grid" id="randomTable"></div>
-        </div>
+document.getElementById('nameInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') addPlayer();
+});
 
-        <!-- 組み合わせ & スコア記録 -->
-        <div class="card">
-          <h2>🎾 組み合わせ & スコア記録</h2>
-          <p style="font-size: 13px; color: #666; margin-bottom: 14px">
-            各ゲームの結果を入力 ／
-            <b>キープ</b
-            >=サーブ側勝利　<b>ブレーク</b>=レシーブ側勝利　（再クリックで取消）
-          </p>
-          <div id="combinations"></div>
-          <button class="btn-reshuffle no-print" onclick="generate()">
-            🔄 再抽選（記録リセット）
-          </button>
-          <button class="btn-print no-print" onclick="window.print()">
-            🖨️ 印刷
-          </button>
-        </div>
+function addPlayer() {
+  const input = document.getElementById('nameInput');
+  const name = input.value.trim();
+  if (!name) return;
+  if (players.includes(name)) { alert('同じ名前が既に登録されています'); return; }
+  players.push(name);
+  input.value = '';
+  input.focus();
+  renderPlayers();
+}
 
-        <!-- 集計 -->
-        <div class="card">
-          <h2>📊 取得ゲーム数 集計</h2>
-          <table class="stats-table">
-            <thead>
-              <tr>
-                <th rowspan="2">順位</th>
-                <th rowspan="2">プレーヤー</th>
-                <th rowspan="2">試合数</th>
-                <th colspan="2">取得ゲーム数</th>
-                <th colspan="2">個人</th>
-                <th colspan="2">チーム</th>
-              </tr>
-              <tr>
-                <th>個人</th>
-                <th>チーム</th>
-                <th>キープ</th>
-                <th>
-                  ブレーク<br /><small style="font-weight: normal; opacity: 0.8"
-                    >（被）</small
-                  >
-                </th>
-                <th>キープ</th>
-                <th>ブレーク</th>
-              </tr>
-            </thead>
-            <tbody id="statsBody"></tbody>
-          </table>
-          <p style="font-size: 11px; color: #999; margin-top: 10px">
-            ※ <b>個人キープ</b>: 自分がサーバーに指定されて取得 ／
-            <b>個人ブレーク（被）</b>: 自分のサーブが破られた回数<br />
-            ※ <b>チームキープ</b>: サーブ側チームとして取得（個人含む）／
-            <b>チームブレーク</b>: レシーブ側チームとして取得<br />
-            ※ サーバー未選択のキープはチーム両名にカウント
-          </p>
-        </div>
-      </div>
+function removePlayer(idx) {
+  players.splice(idx, 1);
+  renderPlayers();
+}
+
+function renderPlayers() {
+  const list = document.getElementById('playerList');
+  list.innerHTML = players.map((p, i) => `
+    <li class="player-item">
+      <span class="player-num">${i + 1}.</span>
+      <span class="player-name">${escHtml(p)}</span>
+      <button class="btn-remove" onclick="removePlayer(${i})">✕</button>
+    </li>
+  `).join('');
+  document.getElementById('countBadge').textContent = `参加者: ${players.length}名`;
+  document.getElementById('generateBtn').disabled = players.length < 4;
+  document.getElementById('results').classList.add('hidden');
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ペアキーを生成（順不同）
+function pairKey(a, b) {
+  return a < b ? `${a}_${b}` : `${b}_${a}`;
+}
+
+// ペア重複を避けながら4人グループを編成する
+// playing: 今ラウンドの出場プレーヤーインデックス配列
+// pairCount: これまでのペア出現回数 { pairKey: count }
+// MAX_RETRY: 試行回数上限
+function arrangeWithPairAvoidance(playing, pairCount, MAX_RETRY = 200) {
+  const courtsNum = Math.floor(playing.length / 4);
+  let bestArrangement = null;
+  let bestScore = Infinity;
+
+  for (let attempt = 0; attempt < MAX_RETRY; attempt++) {
+    const shuffled = shuffle(playing);
+    let score = 0;
+    const arrangement = [];
+
+    for (let c = 0; c < courtsNum; c++) {
+      const i0 = shuffled[c * 4];
+      const i1 = shuffled[c * 4 + 1];
+      const i2 = shuffled[c * 4 + 2];
+      const i3 = shuffled[c * 4 + 3];
+
+      // ペアA: i0&i1, ペアB: i2&i3
+      const pA = pairKey(i0, i1);
+      const pB = pairKey(i2, i3);
+      score += (pairCount[pA] || 0) + (pairCount[pB] || 0);
+      arrangement.push([i0, i1, i2, i3]);
+    }
+
+    if (score < bestScore) {
+      bestScore = score;
+      bestArrangement = arrangement;
+      if (score === 0) break; // 完全に重複なし
+    }
+  }
+
+  return { arrangement: bestArrangement, score: bestScore };
+}
+
+function generate() {
+  const numRounds = Math.max(1, Math.min(20, parseInt(document.getElementById('numRounds').value) || 5));
+  const n = players.length;
+  const courtsPerRound = Math.floor(n / 4);
+
+  const numbered = shuffle(players);
+
+  document.getElementById('randomTable').innerHTML = numbered.map((p, i) => `
+    <div class="random-item">
+      <div class="circle-num">${i + 1}</div>
+      <span>${escHtml(p)}</span>
     </div>
+  `).join('');
 
-    <script>
-      let players = [
-        "プレイヤー#1",
-        "プレイヤー#2",
-        "プレイヤー#3",
-        "プレイヤー#4",
-      ];
-      let numberedPlayers = []; // 乱数表順のプレーヤー名
-      let roundsData = []; // 全ラウンドデータ
+  const gamesPlayed = new Array(n).fill(0);
+  // ペア出現回数を管理
+  const pairCount = {};
+  const roundsHTML = [];
 
-      /* ─── 初期化 ─── */
-      (function init() {
-        // 今日の日付をセット
-        const today = new Date();
-        const yyyy = today.getFullYear();
-        const mm = String(today.getMonth() + 1).padStart(2, "0");
-        const dd = String(today.getDate()).padStart(2, "0");
-        document.getElementById("eventDate").value = `${yyyy}-${mm}-${dd}`;
+  for (let round = 0; round < numRounds; round++) {
+    // ゲーム数が少ない順でソート
+    const order = [...Array(n).keys()].sort((a, b) =>
+      gamesPlayed[a] !== gamesPlayed[b]
+        ? gamesPlayed[a] - gamesPlayed[b]
+        : Math.random() - 0.5
+    );
 
-        // ヘッダー日付・会場をリアルタイム反映
-        function updateHeader() {
-          const dateVal = document.getElementById("eventDate").value;
-          const venueVal = document.getElementById("eventVenue").value.trim();
-          if (dateVal) {
-            const [y, m, d] = dateVal.split("-");
-            document.getElementById("headerDate").textContent =
-              `${y}年${m}月${d}日`;
-          } else {
-            document.getElementById("headerDate").textContent = "";
-          }
-          document.getElementById("headerVenue").textContent = venueVal
-            ? `📍 ${venueVal}`
-            : "";
-        }
-        document
-          .getElementById("eventDate")
-          .addEventListener("input", updateHeader);
-        document
-          .getElementById("eventVenue")
-          .addEventListener("input", updateHeader);
-        updateHeader();
+    const playingRaw = order.slice(0, courtsPerRound * 4);
+    const sitting = order.slice(courtsPerRound * 4);
 
-        // 初期プレーヤーを描画
-        renderPlayers();
-      })();
+    // ペア重複を避けた配置を取得
+    const { arrangement, score } = arrangeWithPairAvoidance(playingRaw, pairCount);
 
-      /* ─── 入力 ─── */
-      document.getElementById("nameInput").addEventListener("keydown", (e) => {
-        if (e.key === "Enter") addPlayer();
-      });
+    let courtsHTML = '';
+    for (let c = 0; c < arrangement.length; c++) {
+      const [i0, i1, i2, i3] = arrangement[c];
+      gamesPlayed[i0]++; gamesPlayed[i1]++; gamesPlayed[i2]++; gamesPlayed[i3]++;
 
-      function esc(s) {
-        return String(s)
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;");
-      }
+      const pA = pairKey(i0, i1);
+      const pB = pairKey(i2, i3);
+      const warnA = (pairCount[pA] || 0) > 0;
+      const warnB = (pairCount[pB] || 0) > 0;
 
-      function addPlayer() {
-        const el = document.getElementById("nameInput");
-        const name = el.value.trim();
-        if (!name) return;
-        if (players.includes(name)) {
-          alert("同じ名前が既に登録されています");
-          return;
-        }
-        players.push(name);
-        el.value = "";
-        el.focus();
-        renderPlayers();
-      }
+      // ペア出現回数を更新
+      pairCount[pA] = (pairCount[pA] || 0) + 1;
+      pairCount[pB] = (pairCount[pB] || 0) + 1;
 
-      function removePlayer(idx) {
-        players.splice(idx, 1);
-        renderPlayers();
-      }
+      courtsHTML += `
+        <div class="court-block">
+          <div class="court-label">🟢 コート ${c + 1}</div>
+          <div class="match-row">
+            <div class="team-box">
+              <div class="player-a">${escHtml(numbered[i0])}</div>
+              <div class="player-b">＆ ${escHtml(numbered[i1])}</div>
+              ${warnA ? `<div class="pair-warn">⚠ 再ペア</div>` : ''}
+            </div>
+            <div class="vs-label">VS</div>
+            <div class="team-box">
+              <div class="player-a">${escHtml(numbered[i2])}</div>
+              <div class="player-b">＆ ${escHtml(numbered[i3])}</div>
+              ${warnB ? `<div class="pair-warn">⚠ 再ペア</div>` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+    }
 
-      function renderPlayers() {
-        document.getElementById("playerList").innerHTML = players
-          .map(
-            (p, i) => `
-      <li class="player-item">
-        <span class="player-num">${i + 1}.</span>
-        <span class="player-name">${esc(p)}</span>
-        <button class="btn-remove" onclick="removePlayer(${i})">✕</button>
-      </li>
-    `,
-          )
-          .join("");
-        document.getElementById("countBadge").textContent =
-          `参加者: ${players.length}名`;
-        document.getElementById("generateBtn").disabled = players.length < 4;
-        document.getElementById("results").classList.add("hidden");
-      }
+    const sittingHTML = sitting.length > 0
+      ? `<div class="sitting-box">⏳ 待機: ${sitting.map(i => escHtml(numbered[i])).join('、')}</div>`
+      : '';
 
-      /* ─── ユーティリティ ─── */
-      function shuffle(arr) {
-        const a = [...arr];
-        for (let i = a.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [a[i], a[j]] = [a[j], a[i]];
-        }
-        return a;
-      }
-
-      /* ─── 生成 ─── */
-      function generate() {
-        const numRounds = Math.max(
-          1,
-          Math.min(
-            10,
-            parseInt(document.getElementById("numRounds").value) || 5,
-          ),
-        );
-        const n = players.length;
-        const courtsPerRound = Math.floor(n / 4);
-
-        // 乱数表：プレーヤーをシャッフルして番号割り振り
-        numberedPlayers = shuffle(players);
-        document.getElementById("randomTable").innerHTML = numberedPlayers
-          .map(
-            (p, i) => `
-      <div class="random-item">
-        <div class="circle-num">${i + 1}</div>
-        <span>${esc(p)}</span>
+    roundsHTML.push(`
+      <div class="round-block">
+        <div class="round-title">第 ${round + 1} ラウンド</div>
+        ${courtsHTML}
+        ${sittingHTML}
       </div>
-    `,
-          )
-          .join("");
+    `);
+  }
 
-        // 各ラウンドの組み合わせ生成（均等化）
-        roundsData = [];
-        const gamesPlayed = new Array(n).fill(0);
+  document.getElementById('combinations').innerHTML = roundsHTML.join('');
 
-        for (let r = 0; r < numRounds; r++) {
-          // ゲーム数の少ない順にソート（同数はランダム）
-          const order = [...Array(n).keys()].sort((a, b) =>
-            gamesPlayed[a] !== gamesPlayed[b]
-              ? gamesPlayed[a] - gamesPlayed[b]
-              : Math.random() - 0.5,
-          );
+  const statsRows = numbered.map((p, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td>${escHtml(p)}</td>
+      <td><strong>${gamesPlayed[i]}</strong></td>
+    </tr>
+  `).join('');
+  document.getElementById('statsTable').innerHTML = `
+    <thead><tr><th>番号</th><th>プレーヤー</th><th>試合数</th></tr></thead>
+    <tbody>${statsRows}</tbody>
+  `;
 
-          const playing = shuffle(order.slice(0, courtsPerRound * 4));
-          const sitting = order.slice(courtsPerRound * 4);
-
-          const courts = [];
-          for (let c = 0; c < playing.length; c += 4) {
-            const team1 = [playing[c], playing[c + 1]];
-            const team2 = [playing[c + 2], playing[c + 3]];
-            courts.push({
-              team1,
-              team2,
-              // 1ラウンド = 4ゲーム：G1,G3 はteam1サーブ、G2,G4 はteam2サーブ
-              games: [
-                { server: "team1", serverPlayerIdx: null, result: null },
-                { server: "team2", serverPlayerIdx: null, result: null },
-                { server: "team1", serverPlayerIdx: null, result: null },
-                { server: "team2", serverPlayerIdx: null, result: null },
-              ],
-            });
-            for (const idx of [...team1, ...team2]) gamesPlayed[idx]++;
-          }
-          roundsData.push({ courts, sitting });
-        }
-
-        renderCombinations();
-        updateStats();
-        document.getElementById("results").classList.remove("hidden");
-        document
-          .getElementById("results")
-          .scrollIntoView({ behavior: "smooth" });
-      }
-
-      /* ─── 描画 ─── */
-      function renderCombinations() {
-        document.getElementById("combinations").innerHTML = roundsData
-          .map((round, ri) => {
-            const courtsHTML = round.courts
-              .map((court, ci) => renderCourt(ri, ci, court))
-              .join("");
-            const sittingHTML = round.sitting.length
-              ? `<div class="sitting-box">⏳ 待機: ${round.sitting.map((i) => esc(numberedPlayers[i])).join("、")}</div>`
-              : "";
-            return `
-        <div class="round-block">
-          <div class="round-title">第 ${ri + 1} ラウンド</div>
-          ${courtsHTML}${sittingHTML}
-        </div>`;
-          })
-          .join("");
-      }
-
-      function teamLabel(court, side) {
-        const idx = court[side];
-        return `${esc(numberedPlayers[idx[0]])} & ${esc(numberedPlayers[idx[1]])}`;
-      }
-
-      function renderCourt(ri, ci, court) {
-        const t1 = teamLabel(court, "team1");
-        const t2 = teamLabel(court, "team2");
-
-        const gamesHTML = court.games
-          .map((game, gi) => {
-            const servIdx = court[game.server];
-            const p0 = servIdx[0],
-              p1 = servIdx[1];
-            const p0Sel = game.serverPlayerIdx === p0 ? "selected" : "";
-            const p1Sel = game.serverPlayerIdx === p1 ? "selected" : "";
-            const keepSel = game.result === "keep" ? "selected" : "";
-            const breakSel = game.result === "break" ? "selected" : "";
-            const servLabel = game.server === "team1" ? t1 : t2;
-            const resultText = resultLabel(game, court);
-            return `
-        <div class="game-row" id="r${ri}c${ci}g${gi}">
-          <div class="game-num-badge">G${gi + 1}</div>
-          <div class="server-name">${servLabel}<span class="server-tag">サーブ</span></div>
-          <div class="server-select">
-            <span class="server-select-label">サーバー:</span>
-            <button class="btn-server ${p0Sel}" onclick="selectServer(${ri},${ci},${gi},${p0})">${esc(numberedPlayers[p0])}</button>
-            <button class="btn-server ${p1Sel}" onclick="selectServer(${ri},${ci},${gi},${p1})">${esc(numberedPlayers[p1])}</button>
-          </div>
-          <button class="btn-keep ${keepSel}"  onclick="recordGame(${ri},${ci},${gi},'keep')">キープ</button>
-          <button class="btn-break ${breakSel}" onclick="recordGame(${ri},${ci},${gi},'break')">ブレーク</button>
-          <div class="game-result-text">${resultText}</div>
-        </div>`;
-          })
-          .join("");
-
-        const score = courtScore(court);
-        return `
-      <div class="court-block">
-        <div class="court-label">🟢 コート ${ci + 1}</div>
-        <div class="court-teams">
-          <div class="team-badge">${t1}</div>
-          <div class="vs-label">VS</div>
-          <div class="team-badge">${t2}</div>
-        </div>
-        ${gamesHTML}
-        <div class="court-score" id="score-r${ri}c${ci}">
-          <div class="score-team">
-            <div class="score-name">${t1}</div>
-            <div class="score-num" id="sc1-r${ri}c${ci}">${score.t1}</div>
-          </div>
-          <div class="score-sep">:</div>
-          <div class="score-team">
-            <div class="score-name">${t2}</div>
-            <div class="score-num" id="sc2-r${ri}c${ci}">${score.t2}</div>
-          </div>
-        </div>
-      </div>`;
-      }
-
-      function resultLabel(game, court) {
-        if (!game.result) return "";
-        if (game.result === "keep") {
-          const name =
-            game.serverPlayerIdx !== null
-              ? `<b>${esc(numberedPlayers[game.serverPlayerIdx])}</b>`
-              : teamLabel(court, game.server);
-          return `✓ ${name} キープ`;
-        } else {
-          const winnerSide = game.server === "team1" ? "team2" : "team1";
-          return `✓ ${teamLabel(court, winnerSide)} ブレーク`;
-        }
-      }
-
-      /* ─── サーバー選択 ─── */
-      function selectServer(ri, ci, gi, playerIdx) {
-        const game = roundsData[ri].courts[ci].games[gi];
-        const court = roundsData[ri].courts[ci];
-        // 同じプレーヤーを再クリックで解除
-        game.serverPlayerIdx =
-          game.serverPlayerIdx === playerIdx ? null : playerIdx;
-
-        const gameEl = document.getElementById(`r${ri}c${ci}g${gi}`);
-        if (gameEl) {
-          const servIdx = court[game.server];
-          const btns = gameEl.querySelectorAll(".btn-server");
-          btns[0].className = `btn-server ${game.serverPlayerIdx === servIdx[0] ? "selected" : ""}`;
-          btns[1].className = `btn-server ${game.serverPlayerIdx === servIdx[1] ? "selected" : ""}`;
-          // 結果テキストも更新
-          gameEl.querySelector(".game-result-text").innerHTML = resultLabel(
-            game,
-            court,
-          );
-        }
-        updateStats();
-      }
-
-      /* ─── ゲーム記録 ─── */
-      function recordGame(ri, ci, gi, result) {
-        const game = roundsData[ri].courts[ci].games[gi];
-        game.result = game.result === result ? null : result; // 同じで再クリック→取消
-
-        const court = roundsData[ri].courts[ci];
-        const gameEl = document.getElementById(`r${ri}c${ci}g${gi}`);
-        if (gameEl) {
-          gameEl.querySelector(".btn-keep").className =
-            `btn-keep  ${game.result === "keep" ? "selected" : ""}`;
-          gameEl.querySelector(".btn-break").className =
-            `btn-break ${game.result === "break" ? "selected" : ""}`;
-          gameEl.querySelector(".game-result-text").textContent = resultLabel(
-            game,
-            court,
-          ).replace(/<[^>]*>/g, "");
-          // innerHTML は使わずテキストで更新（チーム名に HTML は含まれないが安全のため）
-          gameEl.querySelector(".game-result-text").innerHTML = resultLabel(
-            game,
-            court,
-          );
-        }
-
-        // スコア更新
-        const s = courtScore(court);
-        const sc1 = document.getElementById(`sc1-r${ri}c${ci}`);
-        const sc2 = document.getElementById(`sc2-r${ri}c${ci}`);
-        if (sc1) sc1.textContent = s.t1;
-        if (sc2) sc2.textContent = s.t2;
-
-        updateStats();
-      }
-
-      /* ─── スコア・集計 ─── */
-      function courtScore(court) {
-        let t1 = 0,
-          t2 = 0;
-        for (const g of court.games) {
-          if (!g.result) continue;
-          if (g.result === "keep") {
-            if (g.server === "team1") t1++;
-            else t2++;
-          } else {
-            if (g.server === "team1") t2++;
-            else t1++;
-          }
-        }
-        return { t1, t2 };
-      }
-
-      function computeStats() {
-        const stats = numberedPlayers.map(() => ({
-          played: 0, // 試合数: 結果が記録されたゲームへの参加数
-          gamesWon: 0,
-          keepIndiv: 0, // キープ（個人）: 自分がサーバーで取得
-          breakIndiv: 0, // ブレーク（個人）: 自分がサーバーでブレークされた
-          keepTeam: 0, // キープ（チーム）: サーブ側チームとして取得
-          breakTeam: 0, // ブレーク（チーム）: レシーブ側チームとして取得
-        }));
-
-        for (const round of roundsData) {
-          for (const court of round.courts) {
-            for (const game of court.games) {
-              if (!game.result) continue;
-              const servingTeam =
-                game.server === "team1" ? court.team1 : court.team2;
-              const receivingTeam =
-                game.server === "team1" ? court.team2 : court.team1;
-
-              // 試合数: コートに出ていた全員
-              for (const i of [...servingTeam, ...receivingTeam])
-                stats[i].played++;
-
-              if (game.result === "keep") {
-                // キープ（チーム）: サーブ側全員
-                for (const i of servingTeam) stats[i].keepTeam++;
-                // キープ（個人）& gamesWon
-                if (game.serverPlayerIdx !== null) {
-                  stats[game.serverPlayerIdx].keepIndiv++;
-                  stats[game.serverPlayerIdx].gamesWon++;
-                } else {
-                  for (const i of servingTeam) stats[i].gamesWon++;
-                }
-              } else {
-                // break
-                // ブレーク（チーム）: レシーブ側全員
-                for (const i of receivingTeam) {
-                  stats[i].breakTeam++;
-                  stats[i].gamesWon++;
-                }
-                // ブレーク（個人）: サーバーが特定されていたらその人のブレーク被数
-                if (game.serverPlayerIdx !== null)
-                  stats[game.serverPlayerIdx].breakIndiv++;
-              }
-            }
-          }
-        }
-        return stats;
-      }
-
-      function updateStats() {
-        const raw = computeStats();
-        const rows = numberedPlayers
-          .map((p, i) => ({ name: p, ...raw[i] }))
-          .sort((a, b) => b.gamesWon - a.gamesWon || b.keepIndiv - a.keepIndiv);
-
-        let rank = 1;
-        document.getElementById("statsBody").innerHTML = rows
-          .map((s, i) => {
-            if (i > 0 && s.gamesWon < rows[i - 1].gamesWon) rank = i + 1;
-            const top = rank === 1 && s.gamesWon > 0;
-            return `
-        <tr class="${top ? "rank-1" : ""}">
-          <td>${top ? "🏆" : rank}</td>
-          <td>${esc(s.name)}</td>
-          <td>${s.played}</td>
-          <td class="games-won-cell">${s.keepIndiv}</td>
-          <td class="games-won-cell">${s.keepTeam + s.breakTeam}</td>
-          <td>${s.keepIndiv}</td>
-          <td>${s.breakIndiv}</td>
-          <td>${s.keepTeam}</td>
-          <td>${s.breakTeam}</td>
-        </tr>`;
-          })
-          .join("");
-      }
-    </script>
-  </body>
+  document.getElementById('results').classList.remove('hidden');
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+}
+</script>
+</body>
 </html>
