@@ -1,282 +1,324 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🎾 テニス ダブルス 組み合わせ</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f1f8e9; color: #333; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎾 テニス ダブルス 組み合わせ</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f1f8e9; color: #333; }
 
-    header { background: #2e7d32; color: white; padding: 20px; text-align: center; }
-    header h1 { font-size: 26px; }
-    header p { margin-top: 6px; font-size: 13px; opacity: 0.8; }
+header { background: #2e7d32; color: white; padding: 20px; text-align: center; }
+header h1 { font-size: 26px; }
+header p { margin-top: 6px; font-size: 13px; opacity: 0.8; }
 
-    .container { max-width: 800px; margin: 0 auto; padding: 16px; }
+.container { max-width: 800px; margin: 0 auto; padding: 16px; }
 
-    .card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-    .card h2 { color: #2e7d32; font-size: 16px; margin-bottom: 14px; border-bottom: 2px solid #c8e6c9; padding-bottom: 8px; }
+.card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+.card h2 { color: #2e7d32; font-size: 16px; margin-bottom: 14px; border-bottom: 2px solid #c8e6c9; padding-bottom: 8px; }
 
-    /* 入力 */
-    .input-row { display: flex; gap: 8px; margin-bottom: 12px; }
-    input[type=text] { flex: 1; padding: 10px 14px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; }
-    input[type=text]:focus { outline: none; border-color: #4caf50; }
-    input[type=number] { width: 70px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; text-align: center; }
+.input-row { display: flex; gap: 8px; margin-bottom: 12px; }
+input[type=text] { flex: 1; padding: 10px 14px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; }
+input[type=text]:focus { outline: none; border-color: #4caf50; }
+input[type=number] { width: 70px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; text-align: center; }
 
-    button { padding: 10px 18px; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; transition: background 0.2s; }
-    .btn-add { background: #4caf50; color: white; }
-    .btn-add:hover { background: #388e3c; }
-    .btn-remove { background: #ffcdd2; color: #c62828; padding: 4px 10px; font-size: 13px; }
-    .btn-remove:hover { background: #ef9a9a; }
-    .btn-generate { background: #2e7d32; color: white; width: 100%; padding: 16px; font-size: 18px; font-weight: bold; }
-    .btn-generate:hover:not(:disabled) { background: #1b5e20; }
-    .btn-generate:disabled { background: #bdbdbd; cursor: not-allowed; }
-    .btn-reshuffle { background: #66bb6a; color: white; width: 100%; margin-top: 14px; }
-    .btn-reshuffle:hover { background: #43a047; }
-    .btn-print { background: #1565c0; color: white; width: 100%; margin-top: 8px; }
-    .btn-print:hover { background: #0d47a1; }
+button { padding: 10px 18px; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; transition: background 0.2s; }
+.btn-add { background: #4caf50; color: white; }
+.btn-add:hover { background: #388e3c; }
+.btn-remove { background: #ffcdd2; color: #c62828; padding: 4px 10px; font-size: 13px; }
+.btn-remove:hover { background: #ef9a9a; }
+.btn-generate { background: #2e7d32; color: white; width: 100%; padding: 16px; font-size: 18px; font-weight: bold; }
+.btn-generate:hover:not(:disabled) { background: #1b5e20; }
+.btn-generate:disabled { background: #bdbdbd; cursor: not-allowed; }
+.btn-reshuffle { background: #66bb6a; color: white; width: 100%; margin-top: 14px; }
+.btn-reshuffle:hover { background: #43a047; }
+.btn-print { background: #1565c0; color: white; width: 100%; margin-top: 8px; }
+.btn-print:hover { background: #0d47a1; }
 
-    /* プレーヤーリスト */
-    .player-list { list-style: none; }
-    .player-item { display: flex; align-items: center; padding: 8px 4px; border-bottom: 1px solid #f0f0f0; }
-    .player-num { color: #aaa; font-size: 13px; width: 28px; }
-    .player-name { flex: 1; font-size: 15px; }
-    .badge { background: #e8f5e9; color: #2e7d32; padding: 4px 14px; border-radius: 20px; font-size: 14px; font-weight: bold; display: inline-block; margin-top: 10px; }
+.player-list { list-style: none; }
+.player-item { display: flex; align-items: center; padding: 8px 4px; border-bottom: 1px solid #f0f0f0; }
+.player-num { color: #aaa; font-size: 13px; width: 28px; }
+.player-name { flex: 1; font-size: 15px; }
+.badge { background: #e8f5e9; color: #2e7d32; padding: 4px 14px; border-radius: 20px; font-size: 14px; font-weight: bold; display: inline-block; margin-top: 10px; }
 
-    /* 設定 */
-    .settings-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; font-size: 15px; color: #555; }
+.settings-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; font-size: 15px; color: #555; }
 
-    /* 乱数表 */
-    .random-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
-    .random-item { display: flex; align-items: center; gap: 10px; background: #f9fbe7; border-radius: 8px; padding: 8px 12px; }
-    .circle-num { background: #4caf50; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; flex-shrink: 0; }
+.random-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+.random-item { display: flex; align-items: center; gap: 10px; background: #f9fbe7; border-radius: 8px; padding: 8px 12px; }
+.circle-num { background: #4caf50; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; flex-shrink: 0; }
 
-    /* 組み合わせ */
-    .round-block { border: 1px solid #c8e6c9; border-radius: 10px; padding: 14px; margin-bottom: 12px; }
-    .round-title { font-weight: bold; color: #1b5e20; font-size: 15px; margin-bottom: 10px; }
-    .court-block { background: #e8f5e9; border-radius: 8px; padding: 12px; margin-bottom: 8px; }
-    .court-label { font-size: 12px; color: #555; margin-bottom: 8px; }
-    .match-row { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
-    .team-box { background: white; border: 2px solid #a5d6a7; border-radius: 8px; padding: 8px 16px; text-align: center; min-width: 130px; }
-    .team-box .player-a { font-weight: bold; font-size: 15px; color: #2e7d32; }
-    .team-box .player-b { font-size: 13px; color: #555; margin-top: 2px; }
-    .vs-label { font-weight: bold; color: #888; font-size: 16px; }
-    .sitting-box { background: #fff8e1; border-radius: 8px; padding: 8px 12px; font-size: 13px; color: #e65100; margin-top: 6px; }
+.round-block { border: 1px solid #c8e6c9; border-radius: 10px; padding: 14px; margin-bottom: 12px; }
+.round-title { font-weight: bold; color: #1b5e20; font-size: 15px; margin-bottom: 10px; }
+.court-block { background: #e8f5e9; border-radius: 8px; padding: 12px; margin-bottom: 8px; }
+.court-label { font-size: 12px; color: #555; margin-bottom: 8px; }
+.match-row { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.team-box { background: white; border: 2px solid #a5d6a7; border-radius: 8px; padding: 8px 16px; text-align: center; min-width: 130px; }
+.team-box .player-a { font-weight: bold; font-size: 15px; color: #2e7d32; }
+.team-box .player-b { font-size: 13px; color: #555; margin-top: 2px; }
+.vs-label { font-weight: bold; color: #888; font-size: 16px; }
+.sitting-box { background: #fff8e1; border-radius: 8px; padding: 8px 12px; font-size: 13px; color: #e65100; margin-top: 6px; }
 
-    /* 統計 */
-    .stats-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    .stats-table th { background: #4caf50; color: white; padding: 8px 12px; text-align: center; }
-    .stats-table td { padding: 8px 12px; text-align: center; border-bottom: 1px solid #e0e0e0; }
-    .stats-table tr:nth-child(even) td { background: #f1f8e9; }
+/* ペア重複警告 */
+.pair-warn { background: #fff3e0; border: 1px solid #ffb74d; border-radius: 6px; padding: 4px 10px; font-size: 12px; color: #e65100; margin-top: 6px; display: inline-block; }
 
-    .hidden { display: none; }
+.stats-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.stats-table th { background: #4caf50; color: white; padding: 8px 12px; text-align: center; }
+.stats-table td { padding: 8px 12px; text-align: center; border-bottom: 1px solid #e0e0e0; }
+.stats-table tr:nth-child(even) td { background: #f1f8e9; }
 
-    @media print {
-      header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-      .no-print { display: none !important; }
-      .card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
-    }
-  </style>
+.hidden { display: none; }
+
+@media print {
+header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.no-print { display: none !important; }
+.card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+}
+</style>
 </head>
 <body>
-    <p><a href="tennis-keep.html">KEEP・BREAK記録版はこちら</a></p>
-  <header>
-    <h1>🎾 テニス ダブルス 組み合わせ</h1>
-    <p>ランダム公平組み合わせシステム</p>
-  </header>
+  <p><a href="tennis-keep.html">KEEP・BREAK記録版はこちら</a></p>
+<header>
+<h1>🎾 テニス ダブルス 組み合わせ</h1>
+<p>ランダム公平組み合わせシステム（ペア重複回避）</p>
+</header>
 
-  <div class="container">
+<div class="container">
 
-    <!-- 参加者入力 -->
-    <div class="card no-print">
-      <h2>👥 参加者入力</h2>
-      <div class="input-row">
-        <input type="text" id="nameInput" placeholder="プレーヤー名を入力（例: 田中）" />
-        <button class="btn-add" onclick="addPlayer()">追加</button>
-      </div>
-      <ul class="player-list" id="playerList"></ul>
-      <div class="badge" id="countBadge">参加者: 0名</div>
-      <p style="font-size:12px;color:#999;margin-top:8px">※ 4名以上で生成できます</p>
+<div class="card no-print">
+<h2>👥 参加者入力</h2>
+<div class="input-row">
+<input type="text" id="nameInput" placeholder="プレーヤー名を入力（例: 田中）" />
+<button class="btn-add" onclick="addPlayer()">追加</button>
+</div>
+<ul class="player-list" id="playerList"></ul>
+<div class="badge" id="countBadge">参加者: 0名</div>
+<p style="font-size:12px;color:#999;margin-top:8px">※ 4名以上で生成できます</p>
+</div>
+
+<div class="card no-print">
+<h2>⚙️ 設定</h2>
+<div class="settings-row">
+<label for="numRounds">ラウンド数（試合数）:</label>
+<input type="number" id="numRounds" min="1" max="20" value="5" />
+<span style="font-size:13px;color:#999">（1〜20）</span>
+</div>
+</div>
+
+<button class="btn-generate no-print" id="generateBtn" onclick="generate()" disabled>
+🎲 組み合わせを生成
+</button>
+
+<div id="results" class="hidden">
+
+<div class="card">
+<h2>📋 乱数表</h2>
+<div class="random-grid" id="randomTable"></div>
+</div>
+
+<div class="card">
+<h2>🎾 組み合わせ表</h2>
+<div id="combinations"></div>
+<button class="btn-reshuffle no-print" onclick="generate()">🔄 再抽選</button>
+<button class="btn-print no-print" onclick="window.print()">🖨️ 印刷</button>
+</div>
+
+<div class="card">
+<h2>📊 試合数 統計</h2>
+<table class="stats-table" id="statsTable"></table>
+</div>
+
+</div>
+</div>
+
+<script>
+let players = [];
+
+document.getElementById('nameInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') addPlayer();
+});
+
+function addPlayer() {
+  const input = document.getElementById('nameInput');
+  const name = input.value.trim();
+  if (!name) return;
+  if (players.includes(name)) { alert('同じ名前が既に登録されています'); return; }
+  players.push(name);
+  input.value = '';
+  input.focus();
+  renderPlayers();
+}
+
+function removePlayer(idx) {
+  players.splice(idx, 1);
+  renderPlayers();
+}
+
+function renderPlayers() {
+  const list = document.getElementById('playerList');
+  list.innerHTML = players.map((p, i) => `
+    <li class="player-item">
+      <span class="player-num">${i + 1}.</span>
+      <span class="player-name">${escHtml(p)}</span>
+      <button class="btn-remove" onclick="removePlayer(${i})">✕</button>
+    </li>
+  `).join('');
+  document.getElementById('countBadge').textContent = `参加者: ${players.length}名`;
+  document.getElementById('generateBtn').disabled = players.length < 4;
+  document.getElementById('results').classList.add('hidden');
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ペアキーを生成（順不同）
+function pairKey(a, b) {
+  return a < b ? `${a}_${b}` : `${b}_${a}`;
+}
+
+// ペア重複を避けながら4人グループを編成する
+// playing: 今ラウンドの出場プレーヤーインデックス配列
+// pairCount: これまでのペア出現回数 { pairKey: count }
+// MAX_RETRY: 試行回数上限
+function arrangeWithPairAvoidance(playing, pairCount, MAX_RETRY = 200) {
+  const courtsNum = Math.floor(playing.length / 4);
+  let bestArrangement = null;
+  let bestScore = Infinity;
+
+  for (let attempt = 0; attempt < MAX_RETRY; attempt++) {
+    const shuffled = shuffle(playing);
+    let score = 0;
+    const arrangement = [];
+
+    for (let c = 0; c < courtsNum; c++) {
+      const i0 = shuffled[c * 4];
+      const i1 = shuffled[c * 4 + 1];
+      const i2 = shuffled[c * 4 + 2];
+      const i3 = shuffled[c * 4 + 3];
+
+      // ペアA: i0&i1, ペアB: i2&i3
+      const pA = pairKey(i0, i1);
+      const pB = pairKey(i2, i3);
+      score += (pairCount[pA] || 0) + (pairCount[pB] || 0);
+      arrangement.push([i0, i1, i2, i3]);
+    }
+
+    if (score < bestScore) {
+      bestScore = score;
+      bestArrangement = arrangement;
+      if (score === 0) break; // 完全に重複なし
+    }
+  }
+
+  return { arrangement: bestArrangement, score: bestScore };
+}
+
+function generate() {
+  const numRounds = Math.max(1, Math.min(20, parseInt(document.getElementById('numRounds').value) || 5));
+  const n = players.length;
+  const courtsPerRound = Math.floor(n / 4);
+
+  const numbered = shuffle(players);
+
+  document.getElementById('randomTable').innerHTML = numbered.map((p, i) => `
+    <div class="random-item">
+      <div class="circle-num">${i + 1}</div>
+      <span>${escHtml(p)}</span>
     </div>
+  `).join('');
 
-    <!-- 設定 -->
-    <div class="card no-print">
-      <h2>⚙️ 設定</h2>
-      <div class="settings-row">
-        <label for="numRounds">ラウンド数（試合数）:</label>
-        <input type="number" id="numRounds" min="1" max="10" value="5" />
-        <span style="font-size:13px;color:#999">（1〜10）</span>
-      </div>
-    </div>
+  const gamesPlayed = new Array(n).fill(0);
+  // ペア出現回数を管理
+  const pairCount = {};
+  const roundsHTML = [];
 
-    <!-- 生成ボタン -->
-    <button class="btn-generate no-print" id="generateBtn" onclick="generate()" disabled>
-      🎲 組み合わせを生成
-    </button>
+  for (let round = 0; round < numRounds; round++) {
+    // ゲーム数が少ない順でソート
+    const order = [...Array(n).keys()].sort((a, b) =>
+      gamesPlayed[a] !== gamesPlayed[b]
+        ? gamesPlayed[a] - gamesPlayed[b]
+        : Math.random() - 0.5
+    );
 
-    <!-- 結果エリア -->
-    <div id="results" class="hidden">
+    const playingRaw = order.slice(0, courtsPerRound * 4);
+    const sitting = order.slice(courtsPerRound * 4);
 
-      <!-- 乱数表 -->
-      <div class="card">
-        <h2>📋 乱数表</h2>
-        <div class="random-grid" id="randomTable"></div>
-      </div>
+    // ペア重複を避けた配置を取得
+    const { arrangement, score } = arrangeWithPairAvoidance(playingRaw, pairCount);
 
-      <!-- 組み合わせ表 -->
-      <div class="card">
-        <h2>🎾 組み合わせ表</h2>
-        <div id="combinations"></div>
-        <button class="btn-reshuffle no-print" onclick="generate()">🔄 再抽選</button>
-        <button class="btn-print no-print" onclick="window.print()">🖨️ 印刷</button>
-      </div>
+    let courtsHTML = '';
+    for (let c = 0; c < arrangement.length; c++) {
+      const [i0, i1, i2, i3] = arrangement[c];
+      gamesPlayed[i0]++; gamesPlayed[i1]++; gamesPlayed[i2]++; gamesPlayed[i3]++;
 
-      <!-- 統計 -->
-      <div class="card">
-        <h2>📊 試合数 統計</h2>
-        <table class="stats-table" id="statsTable"></table>
-      </div>
+      const pA = pairKey(i0, i1);
+      const pB = pairKey(i2, i3);
+      const warnA = (pairCount[pA] || 0) > 0;
+      const warnB = (pairCount[pB] || 0) > 0;
 
-    </div>
-  </div>
+      // ペア出現回数を更新
+      pairCount[pA] = (pairCount[pA] || 0) + 1;
+      pairCount[pB] = (pairCount[pB] || 0) + 1;
 
-  <script>
-    let players = [];
-
-    // Enterキーで追加
-    document.getElementById('nameInput').addEventListener('keydown', e => {
-      if (e.key === 'Enter') addPlayer();
-    });
-
-    function addPlayer() {
-      const input = document.getElementById('nameInput');
-      const name = input.value.trim();
-      if (!name) return;
-      if (players.includes(name)) { alert('同じ名前が既に登録されています'); return; }
-      players.push(name);
-      input.value = '';
-      input.focus();
-      renderPlayers();
-    }
-
-    function removePlayer(idx) {
-      players.splice(idx, 1);
-      renderPlayers();
-    }
-
-    function renderPlayers() {
-      const list = document.getElementById('playerList');
-      list.innerHTML = players.map((p, i) => `
-        <li class="player-item">
-          <span class="player-num">${i + 1}.</span>
-          <span class="player-name">${escHtml(p)}</span>
-          <button class="btn-remove" onclick="removePlayer(${i})">✕</button>
-        </li>
-      `).join('');
-      document.getElementById('countBadge').textContent = `参加者: ${players.length}名`;
-      document.getElementById('generateBtn').disabled = players.length < 4;
-      document.getElementById('results').classList.add('hidden');
-    }
-
-    function shuffle(arr) {
-      const a = [...arr];
-      for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
-      }
-      return a;
-    }
-
-    function escHtml(s) {
-      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    }
-
-    function generate() {
-      const numRounds = Math.max(1, Math.min(10, parseInt(document.getElementById('numRounds').value) || 5));
-      const n = players.length;
-      const courtsPerRound = Math.floor(n / 4);
-
-      // 乱数表: プレーヤーをシャッフルして番号を割り振り
-      const numbered = shuffle(players);
-
-      // 乱数表 表示
-      document.getElementById('randomTable').innerHTML = numbered.map((p, i) => `
-        <div class="random-item">
-          <div class="circle-num">${i + 1}</div>
-          <span>${escHtml(p)}</span>
-        </div>
-      `).join('');
-
-      // 各プレーヤーのゲーム数トラッキング（インデックスは numbered[] に対応）
-      const gamesPlayed = new Array(n).fill(0);
-      const roundsHTML = [];
-
-      for (let round = 0; round < numRounds; round++) {
-        // ゲーム数が少ない順でソート（同数の場合はランダム）
-        const order = [...Array(n).keys()].sort((a, b) =>
-          gamesPlayed[a] !== gamesPlayed[b]
-            ? gamesPlayed[a] - gamesPlayed[b]
-            : Math.random() - 0.5
-        );
-
-        // 今ラウンドの出場プレーヤー（4の倍数に切り捨て）
-        const playing = shuffle(order.slice(0, courtsPerRound * 4));
-        const sitting = order.slice(courtsPerRound * 4);
-
-        let courtsHTML = '';
-        for (let c = 0; c < playing.length; c += 4) {
-          const [i0, i1, i2, i3] = [playing[c], playing[c+1], playing[c+2], playing[c+3]];
-          gamesPlayed[i0]++; gamesPlayed[i1]++; gamesPlayed[i2]++; gamesPlayed[i3]++;
-
-          courtsHTML += `
-            <div class="court-block">
-              <div class="court-label">🟢 コート ${c / 4 + 1}</div>
-              <div class="match-row">
-                <div class="team-box">
-                  <div class="player-a">${escHtml(numbered[i0])}</div>
-                  <div class="player-b">＆ ${escHtml(numbered[i1])}</div>
-                </div>
-                <div class="vs-label">VS</div>
-                <div class="team-box">
-                  <div class="player-a">${escHtml(numbered[i2])}</div>
-                  <div class="player-b">＆ ${escHtml(numbered[i3])}</div>
-                </div>
-              </div>
+      courtsHTML += `
+        <div class="court-block">
+          <div class="court-label">🟢 コート ${c + 1}</div>
+          <div class="match-row">
+            <div class="team-box">
+              <div class="player-a">${escHtml(numbered[i0])}</div>
+              <div class="player-b">＆ ${escHtml(numbered[i1])}</div>
+              ${warnA ? `<div class="pair-warn">⚠ 再ペア</div>` : ''}
             </div>
-          `;
-        }
-
-        const sittingHTML = sitting.length > 0
-          ? `<div class="sitting-box">⏳ 待機: ${sitting.map(i => escHtml(numbered[i])).join('、')}</div>`
-          : '';
-
-        roundsHTML.push(`
-          <div class="round-block">
-            <div class="round-title">第 ${round + 1} ラウンド</div>
-            ${courtsHTML}
-            ${sittingHTML}
+            <div class="vs-label">VS</div>
+            <div class="team-box">
+              <div class="player-a">${escHtml(numbered[i2])}</div>
+              <div class="player-b">＆ ${escHtml(numbered[i3])}</div>
+              ${warnB ? `<div class="pair-warn">⚠ 再ペア</div>` : ''}
+            </div>
           </div>
-        `);
-      }
-
-      document.getElementById('combinations').innerHTML = roundsHTML.join('');
-
-      // 統計
-      const statsRows = numbered.map((p, i) => `
-        <tr>
-          <td>${i + 1}</td>
-          <td>${escHtml(p)}</td>
-          <td><strong>${gamesPlayed[i]}</strong></td>
-        </tr>
-      `).join('');
-      document.getElementById('statsTable').innerHTML = `
-        <thead><tr><th>番号</th><th>プレーヤー</th><th>試合数</th></tr></thead>
-        <tbody>${statsRows}</tbody>
+        </div>
       `;
-
-      document.getElementById('results').classList.remove('hidden');
-      document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
     }
-  </script>
+
+    const sittingHTML = sitting.length > 0
+      ? `<div class="sitting-box">⏳ 待機: ${sitting.map(i => escHtml(numbered[i])).join('、')}</div>`
+      : '';
+
+    roundsHTML.push(`
+      <div class="round-block">
+        <div class="round-title">第 ${round + 1} ラウンド</div>
+        ${courtsHTML}
+        ${sittingHTML}
+      </div>
+    `);
+  }
+
+  document.getElementById('combinations').innerHTML = roundsHTML.join('');
+
+  const statsRows = numbered.map((p, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td>${escHtml(p)}</td>
+      <td><strong>${gamesPlayed[i]}</strong></td>
+    </tr>
+  `).join('');
+  document.getElementById('statsTable').innerHTML = `
+    <thead><tr><th>番号</th><th>プレーヤー</th><th>試合数</th></tr></thead>
+    <tbody>${statsRows}</tbody>
+  `;
+
+  document.getElementById('results').classList.remove('hidden');
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+}
+</script>
 </body>
 </html>
